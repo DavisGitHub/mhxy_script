@@ -1,0 +1,3 @@
+([('梦幻西游自动化工具',
+   '/Users/davwan/work/learn/mhxy_script/dist/梦幻西游自动化工具',
+   'EXECUTABLE')],)

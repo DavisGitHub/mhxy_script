@@ -1,0 +1,40 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.8'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Generate icon
+      run: |
+        python create_icon.py
+        python convert_icon.py
+        
+    - name: Build executable
+      run: |
+        python build.py
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: mhxy-tool
+        path: dist/梦幻西游自动化工具.exe
