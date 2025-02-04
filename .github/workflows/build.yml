@@ -12,10 +12,10 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: '3.8'
         
@@ -34,7 +34,12 @@ jobs:
         python build.py
         
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: mhxy-tool
         path: dist/梦幻西游自动化工具.exe
+        
+    - name: Clean up
+      run: |
+        rm -rf build/
+        rm -rf dist/
