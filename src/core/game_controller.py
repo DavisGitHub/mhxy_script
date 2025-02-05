@@ -1,5 +1,6 @@
 import time
 import pyautogui
+import cv2  # 显式导入 OpenCV
 from utils.window_handler import WindowHandler
 
 class GameController:
@@ -8,13 +9,10 @@ class GameController:
         self.game_window = None
         # 设置 pyautogui 的安全边距为0，这样可以移动到屏幕边缘
         pyautogui.FAILSAFE = True
+        # 验证 OpenCV 版本
+        print(f"OpenCV 版本: {cv2.__version__}")
         
     def find_image(self, image_name):
-        """
-        在屏幕上查找指定图片
-        :param image_name: 图片名称（相对于assets目录）
-        :return: 如果找到返回位置坐标(x, y)，否则返回None
-        """
         try:
             if not self.game_window:
                 if not self.find_game_window():
