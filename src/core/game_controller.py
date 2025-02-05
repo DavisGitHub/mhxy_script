@@ -21,19 +21,16 @@ class GameController:
                     return None
                 self.start_automation()
                 
-            # 获取游戏窗口的位置和大小
             rect = self.window_handler.get_window_rect(self.game_window)
             if not rect:
                 return None
                 
             left, top, right, bottom = rect
             
-            # 将所有路径分隔符统一为 Windows 格式
             image_name = image_name.replace('/', '\\')
             image_path = f"..\\src\\assets\\{image_name}.png"
             print(f"正在查找图片：{image_path}")
             
-            # 检查文件是否存在
             import os
             abs_path = os.path.abspath(image_path)
             print(f"图片绝对路径：{abs_path}")
@@ -43,13 +40,21 @@ class GameController:
             
             print(f"查找区域：左={left}, 上={top}, 宽={right-left}, 高={bottom-top}")
             
-            # 在游戏窗口内查找图片
             try:
-                location = pyautogui.locateCenterOnScreen(
-                    abs_path,  # 使用绝对路径
-                    region=(left, top, right - left, bottom - top),
-                    confidence=0.9  # 添加容错率
-                )
+                # 先尝试使用 confidence 参数
+                try:
+                    location = pyautogui.locateCenterOnScreen(
+                        abs_path,
+                        region=(left, top, right - left, bottom - top),
+                        confidence=0.9
+                    )
+                except Exception as e:
+                    print(f"使用 confidence 参数失败，尝试不使用容错率：{str(e)}")
+                    # 如果失败，则不使用 confidence 参数重试
+                    location = pyautogui.locateCenterOnScreen(
+                        abs_path,
+                        region=(left, top, right - left, bottom - top)
+                    )
                 
                 if location:
                     print(f"找到图片，位置：x={location.x}, y={location.y}")
