@@ -18,8 +18,8 @@ class GameController:
         try:
             # 构建完整的图片路径
             image_path = f"src/assets/{image_name}.png"
-            # 在屏幕上查找图片
-            location = pyautogui.locateCenterOnScreen(image_path, confidence=0.9)
+            # 在屏幕上查找图片，不使用 confidence 参数
+            location = pyautogui.locateCenterOnScreen(image_path)
             return location
         except Exception as e:
             print(f"查找图片失败: {e}")
