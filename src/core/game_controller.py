@@ -1,6 +1,8 @@
 import time
+import random
+import win32api
+import win32con
 import pyautogui
-import cv2  # 显式导入 OpenCV
 from utils.window_handler import WindowHandler
 
 class GameController:
@@ -57,7 +59,7 @@ class GameController:
                     print(f"已保存当前区域截图到：debug_screenshot.png")
                 
                 # 直接查找图片，不使用容错率
-                location = pyautogui.locateOnScreen(
+                location = pyautogui.locateCenterOnScreen(
                     abs_path,
                     region=(left, top, width, height),
                     confidence=0.85
@@ -86,8 +88,36 @@ class GameController:
         :param location: 位置坐标(x, y)
         """
         if location:
-            pyautogui.click(location.x, location.y)
-    
+            print(f"移动鼠标到位置：x={location.x}, y={location.y}")
+            self.move_click(location.x, location.y)
+            
+    def move_click(self, x, y, t=0.1):
+        """移动鼠标并点击左键"""
+        win32api.SetCursorPos((x, y))
+        time.sleep(0.1)
+        win32api.mouse_event(
+            win32con.MOUSEEVENTF_LEFTDOWN | win32con.MOUSEEVENTF_LEFTUP,
+            x, y, 0, 0
+        )
+        time.sleep(t)
+        return 0
+        
+    def click(self, x, y):
+        """点击指定位置并将鼠标移动到窗口外"""
+        self.move_click(x, y, 0.1)
+        # 获取窗口大小
+        rect = self.window_handler.get_window_rect(self.game_window)
+        if rect:
+            left, top, right, bottom = rect
+            # 移动到窗口右下角外
+            pyautogui.moveTo(x=right + 10, y=bottom + 10, duration=0.1)
+            
+    def left_click(self, location):
+        """在指定位置执行左键点击"""
+        if location:
+            print(f"点击位置：x={location.x}, y={location.y}")
+            self.click(location.x, location.y)
+            
     def find_game_window(self):
         """查找梦幻西游游戏窗口"""
         print("开始查找游戏窗口...")
