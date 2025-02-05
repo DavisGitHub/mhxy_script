@@ -31,13 +31,36 @@ class GameController:
             # 将所有路径分隔符统一为 Windows 格式
             image_name = image_name.replace('/', '\\')
             image_path = f"..\\src\\assets\\{image_name}.png"
+            print(f"正在查找图片：{image_path}")
+            
+            # 检查文件是否存在
+            import os
+            abs_path = os.path.abspath(image_path)
+            print(f"图片绝对路径：{abs_path}")
+            if not os.path.exists(abs_path):
+                print(f"错误：图片文件不存在！")
+                return None
+            
+            print(f"查找区域：左={left}, 上={top}, 宽={right-left}, 高={bottom-top}")
             
             # 在游戏窗口内查找图片
-            location = pyautogui.locateCenterOnScreen(
-                image_path,
-                region=(left, top, right - left, bottom - top)
-            )
-            return location
+            try:
+                location = pyautogui.locateCenterOnScreen(
+                    abs_path,  # 使用绝对路径
+                    region=(left, top, right - left, bottom - top),
+                    confidence=0.9  # 添加容错率
+                )
+                
+                if location:
+                    print(f"找到图片，位置：x={location.x}, y={location.y}")
+                else:
+                    print(f"未找到图片")
+                return location
+                
+            except Exception as e:
+                print(f"图片匹配过程出错：{str(e)}")
+                return None
+                
         except Exception as e:
             print(f"查找图片失败: {e}")
             return None
