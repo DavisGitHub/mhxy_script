@@ -47,16 +47,30 @@ class GameController:
             print(f"查找区域：左={left}, 上={top}, 宽={right-left}, 高={bottom-top}")
             
             try:
+                # 保存当前区域的截图用于调试
+                import mss
+                import mss.tools
+                
+                with mss.mss() as sct:
+                    # 截取当前查找区域的截图
+                    monitor = {"left": left, "top": top, "width": width, "height": height}
+                    screenshot = sct.grab(monitor)
+                    mss.tools.to_png(screenshot.rgb, screenshot.size, output=f"debug_screenshot.png")
+                    print(f"已保存当前区域截图到：debug_screenshot.png")
+                
                 # 直接查找图片，不使用容错率
                 location = pyautogui.locateCenterOnScreen(
                     abs_path,
-                    region=(left, top, width, height)  # 使用宽度和高度而不是右边和底边
+                    region=(left, top, width, height)
                 )
                 
                 if location:
                     print(f"找到图片，位置：x={location.x}, y={location.y}")
                 else:
-                    print(f"未找到图片")
+                    print(f"未找到图片，可能的原因：")
+                    print("1. 图片不在当前区域内")
+                    print("2. 图片与目标不完全匹配（颜色、大小等）")
+                    print("3. 窗口可能被遮挡或最小化")
                 return location
                 
             except Exception as e:
