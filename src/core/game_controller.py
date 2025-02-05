@@ -21,11 +21,17 @@ class GameController:
                     return None
                 self.start_automation()
                 
+            # 获取游戏窗口的位置和大小
             rect = self.window_handler.get_window_rect(self.game_window)
             if not rect:
                 return None
                 
             left, top, right, bottom = rect
+            width = right - left
+            height = bottom - top
+            
+            print(f"获取到窗口坐标：左={left}, 上={top}, 右={right}, 下={bottom}")
+            print(f"窗口大小：宽={width}, 高={height}")
             
             image_name = image_name.replace('/', '\\')
             image_path = f"..\\src\\assets\\{image_name}.png"
@@ -44,7 +50,7 @@ class GameController:
                 # 直接查找图片，不使用容错率
                 location = pyautogui.locateCenterOnScreen(
                     abs_path,
-                    region=(left, top, right - left, bottom - top)
+                    region=(left, top, width, height)  # 使用宽度和高度而不是右边和底边
                 )
                 
                 if location:
