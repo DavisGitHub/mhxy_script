@@ -6,6 +6,32 @@ class GameController:
     def __init__(self):
         self.window_handler = WindowHandler()
         self.game_window = None
+        # 设置 pyautogui 的安全边距为0，这样可以移动到屏幕边缘
+        pyautogui.FAILSAFE = True
+        
+    def find_image(self, image_name):
+        """
+        在屏幕上查找指定图片
+        :param image_name: 图片名称（相对于assets目录）
+        :return: 如果找到返回位置坐标(x, y)，否则返回None
+        """
+        try:
+            # 构建完整的图片路径
+            image_path = f"src/assets/{image_name}.png"
+            # 在屏幕上查找图片
+            location = pyautogui.locateCenterOnScreen(image_path, confidence=0.9)
+            return location
+        except Exception as e:
+            print(f"查找图片失败: {e}")
+            return None
+            
+    def left_click(self, location):
+        """
+        在指定位置执行左键点击
+        :param location: 位置坐标(x, y)
+        """
+        if location:
+            pyautogui.click(location.x, location.y)
     
     def find_game_window(self):
         """查找梦幻西游游戏窗口"""
