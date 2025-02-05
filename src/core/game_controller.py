@@ -41,20 +41,11 @@ class GameController:
             print(f"查找区域：左={left}, 上={top}, 宽={right-left}, 高={bottom-top}")
             
             try:
-                # 先尝试使用 confidence 参数
-                try:
-                    location = pyautogui.locateCenterOnScreen(
-                        abs_path,
-                        region=(left, top, right - left, bottom - top),
-                        confidence=0.9
-                    )
-                except Exception as e:
-                    print(f"使用 confidence 参数失败，尝试不使用容错率：{str(e)}")
-                    # 如果失败，则不使用 confidence 参数重试
-                    location = pyautogui.locateCenterOnScreen(
-                        abs_path,
-                        region=(left, top, right - left, bottom - top)
-                    )
+                # 直接查找图片，不使用容错率
+                location = pyautogui.locateCenterOnScreen(
+                    abs_path,
+                    region=(left, top, right - left, bottom - top)
+                )
                 
                 if location:
                     print(f"找到图片，位置：x={location.x}, y={location.y}")

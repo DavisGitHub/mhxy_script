@@ -14,6 +14,13 @@ class WindowHandler:
     def get_window_rect(self, hwnd):
         """获取窗口的位置和大小"""
         try:
+            # 检查窗口是否最小化
+            import win32con
+            style = win32gui.GetWindowLong(hwnd, win32con.GWL_STYLE)
+            if style & win32con.WS_MINIMIZE:
+                print("游戏窗口已最小化，请先恢复窗口")
+                return None
+                
             # 获取窗口的客户区域坐标
             left, top, right, bottom = win32gui.GetWindowRect(hwnd)
             print(f"获取到窗口坐标：左={left}, 上={top}, 右={right}, 下={bottom}")
