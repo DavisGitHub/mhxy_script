@@ -16,9 +16,9 @@ class GameController:
         :return: 如果找到返回位置坐标(x, y)，否则返回None
         """
         try:
-            # 构建完整的图片路径
-            image_path = f"src/assets/{image_name}.png"
-            # 在屏幕上查找图片，不使用 confidence 参数
+            # 构建完整的图片路径（使用 Windows 路径格式）
+            image_path = f".\\src\\assets\\{image_name}.png"
+            # 在屏幕上查找图片
             location = pyautogui.locateCenterOnScreen(image_path)
             return location
         except Exception as e:
