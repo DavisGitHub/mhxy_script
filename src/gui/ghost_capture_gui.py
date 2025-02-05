@@ -66,6 +66,11 @@ class GhostCaptureGui:
 
     def _start_task(self):
         """开始执行任务"""
+        # 先查找并激活游戏窗口
+        if not self.dungeon_task.game_controller.find_game_window():
+            print("无法找到游戏窗口，请确保游戏已启动")
+            return
+            
         # 禁用开始按钮，启用结束按钮
         self.start_button.configure(state="disabled")
         self.stop_button.configure(state="normal")

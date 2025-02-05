@@ -16,11 +16,27 @@ class GameController:
         :return: 如果找到返回位置坐标(x, y)，否则返回None
         """
         try:
+            if not self.game_window:
+                if not self.find_game_window():
+                    return None
+                self.start_automation()
+                
+            # 获取游戏窗口的位置和大小
+            rect = self.window_handler.get_window_rect(self.game_window)
+            if not rect:
+                return None
+                
+            left, top, right, bottom = rect
+            
             # 将所有路径分隔符统一为 Windows 格式
             image_name = image_name.replace('/', '\\')
             image_path = f"..\\src\\assets\\{image_name}.png"
-            # 在屏幕上查找图片
-            location = pyautogui.locateCenterOnScreen(image_path)
+            
+            # 在游戏窗口内查找图片
+            location = pyautogui.locateCenterOnScreen(
+                image_path,
+                region=(left, top, right - left, bottom - top)
+            )
             return location
         except Exception as e:
             print(f"查找图片失败: {e}")
