@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from core.ghost_capture import GhostLevel, InstanceType, GhostCapture
 from core.dungeon_tasks import DungeonTask, DungeonConfig, DungeonName, DungeonType
 
 class GhostCaptureGui:
@@ -8,6 +7,12 @@ class GhostCaptureGui:
         self.root = root
         self.dungeon_task = DungeonTask(game_controller)
         
+        # 创建主框架
+        self.frame = ttk.LabelFrame(root, text="副本抓鬼", padding="10")
+        self.frame.pack(fill="x", padx=5, pady=5)
+        
+        # 创建选项和按钮
+        self._create_widgets()
     def _start_task(self):
         """开始执行任务"""
         selected_option = self.dungeon_var.get()

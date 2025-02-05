@@ -66,20 +66,36 @@ class DungeonTask:
         if location := self.game_controller.find_image("ghost_capture/zhongKui"):
             print("找到钟馗图标")
             self.game_controller.left_click(location)
-            time.sleep(2)
+            time.sleep(10)
             
-            # 查找抓鬼任务按钮
-            if location := self.game_controller.find_image("ghost_capture/zhuoGuiRenWu"):
-                print("找到抓鬼任务按钮")
-                self.game_controller.left_click(location)
-                time.sleep(2)
+            while True:  # 外层循环：整个抓鬼流程
+                # 查找抓鬼任务按钮
+                while True:  # 内层循环：查找抓鬼任务按钮
+                    if location := self.game_controller.find_image("ghost_capture/zhuoGuiRenWu"):
+                        print("找到抓鬼任务按钮")
+                        self.game_controller.left_click(location)
+                        time.sleep(2)
+                        break
+                    time.sleep(5)  # 每5秒检查一次抓鬼任务按钮
                 
                 # 查找抓鬼图标
                 if location := self.game_controller.find_image("ghost_capture/ghost"):
                     print("找到抓鬼图标")
                     self.game_controller.left_click(location)
                     time.sleep(2)
-                    return True
+                    
+                    # 循环查找确定按钮
+                    while True:
+                        if location := self.game_controller.find_image("ghost_capture/queDing"):
+                            print("找到确定按钮")
+                            self.game_controller.left_click(location)
+                            time.sleep(2)
+                            break
+                        time.sleep(30)  # 每30秒检查一次确定按钮
+                    
+                    time.sleep(10)  # 等待10秒后继续下一轮抓鬼
+                    continue
+            return True
         return False
 
     def execute_ghost_capture(self):
