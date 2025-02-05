@@ -109,7 +109,8 @@ class DungeonTask:
                     self.game_controller.left_click(location)
                     time.sleep(2)
                     continue
-                
+
+                time.sleep(2)
                 # 如果找不到第一个，尝试查找第二个图标
                 if location := self.game_controller.find_image("ghost_capture/changAn"):
                     print("找到第二个抓鬼任务图标")

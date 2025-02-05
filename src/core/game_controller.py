@@ -59,9 +59,10 @@ class GameController:
                     print(f"已保存当前区域截图到：debug_screenshot.png")
                 
                 # 直接查找图片，不使用容错率
-                location = pyautogui.locateCenterOnScreen(
+                location = pyautogui.locateOnScreen(
                     abs_path,
-                    region=(left, top, width, height)
+                    region=(left, top, width, height),
+                    confidence=0.85
                 )
                 
                 if location:
