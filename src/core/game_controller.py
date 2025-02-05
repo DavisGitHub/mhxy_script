@@ -9,7 +9,7 @@ class GameController:
     
     def find_game_window(self):
         """查找梦幻西游游戏窗口"""
-        self.game_window = self.window_handler.find_window("梦幻西游")
+        self.game_window = self.window_handler.find_window("梦幻西游：时空")
         return self.game_window is not None
     
     def start_automation(self):
