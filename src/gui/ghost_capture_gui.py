@@ -73,3 +73,40 @@ class GhostCaptureGui:
         ]
         for config in configs:
             self.dungeon_task.execute_dungeon(config)
+    def _create_widgets(self):
+        # 创建选项框架
+        options_frame = ttk.Frame(self.frame)
+        options_frame.pack(fill="x", pady=5)
+        
+        # 创建副本选项
+        self.dungeon_var = tk.StringVar(value="69级普通2本")
+        options = [
+            "69级普通2本",
+            "69级3本(2普通+1侠士)",
+            "89级普通3本",
+            "89级5本(3普通+2侠士)"
+        ]
+        
+        for option in options:
+            ttk.Radiobutton(
+                options_frame,
+                text=option,
+                value=option,
+                variable=self.dungeon_var
+            ).pack(fill="x", pady=2)
+        
+        # 创建抓鬼选项
+        self.ghost_enabled = tk.BooleanVar(value=True)
+        ttk.Checkbutton(
+            options_frame,
+            text="执行完副本后是否无限抓鬼",
+            variable=self.ghost_enabled
+        ).pack(fill="x", pady=5)
+        
+        # 创建执行按钮
+        self.start_button = ttk.Button(
+            self.frame,
+            text="开始执行",
+            command=self._start_task
+        )
+        self.start_button.pack(fill="x", pady=10)
