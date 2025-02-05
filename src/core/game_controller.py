@@ -18,7 +18,7 @@ class GameController:
         try:
             # 将所有路径分隔符统一为 Windows 格式
             image_name = image_name.replace('/', '\\')
-            image_path = f".\\src\\assets\\{image_name}.png"
+            image_path = f"..\\src\\assets\\{image_name}.png"
             # 在屏幕上查找图片
             location = pyautogui.locateCenterOnScreen(image_path)
             return location
@@ -36,7 +36,26 @@ class GameController:
     
     def find_game_window(self):
         """查找梦幻西游游戏窗口"""
-        self.game_window = self.window_handler.find_window("梦幻西游：时空")
+        print("开始查找游戏窗口...")
+        try:
+            # 尝试查找完整标题
+            self.game_window = self.window_handler.find_window("梦幻西游：时空")
+            if self.game_window:
+                print("成功找到游戏窗口：梦幻西游：时空")
+                return True
+            
+            # 如果找不到完整标题，尝试部分标题匹配
+            self.game_window = self.window_handler.find_window("梦幻西游")
+            if self.game_window:
+                print("成功找到游戏窗口：梦幻西游")
+                return True
+                
+            print("未找到游戏窗口，请确保游戏已启动且窗口标题正确")
+            return False
+            
+        except Exception as e:
+            print(f"查找游戏窗口时出错: {e}")
+            return False
         return self.game_window is not None
     
     def start_automation(self):
