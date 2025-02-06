@@ -11,8 +11,6 @@ class GameController:
         self.game_window = None
         # 设置 pyautogui 的安全边距为0，这样可以移动到屏幕边缘
         pyautogui.FAILSAFE = True
-        # 验证 OpenCV 版本
-        print(f"OpenCV 版本: {cv2.__version__}")
         
     def find_image(self, image_name):
         try:
@@ -29,10 +27,7 @@ class GameController:
             left, top, right, bottom = rect
             width = right - left
             height = bottom - top
-            
-            print(f"获取到窗口坐标：左={left}, 上={top}, 右={right}, 下={bottom}")
-            print(f"窗口大小：宽={width}, 高={height}")
-            
+                        
             image_name = image_name.replace('/', '\\')
             image_path = f"..\\src\\assets\\{image_name}.png"
             print(f"正在查找图片：{image_path}")
@@ -68,10 +63,7 @@ class GameController:
                 if location:
                     print(f"找到图片，位置：x={location.x}, y={location.y}")
                 else:
-                    print(f"未找到图片，可能的原因：")
-                    print("1. 图片不在当前区域内")
-                    print("2. 图片与目标不完全匹配（颜色、大小等）")
-                    print("3. 窗口可能被遮挡或最小化")
+                    print(f"未找到图片")
                 return location
                 
             except Exception as e:
